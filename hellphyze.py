@@ -26,15 +26,20 @@ class deny_mac(Gtk.Dialog):
 
 class hellphyze:
 
+    # type many commands in the "custom commands" field, separated by a ,  do not add spaces !
     def on_send_clicked(self, widget):
         telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
         telnet.read_until("Username : ")
         telnet.write(self.host_username.get_text() + "\r")
         telnet.read_until("Password : ")
         telnet.write(self.host_password.get_text() + "\r")
-        telnet.write("{0}\r".format(self.custom_commands.get_text()))
-        telnet.write("exit\r")
-        self.textbuffer.set_text("{0}".format(telnet.read_all()))
+        line = self.custom_commands.get_text()
+        for char in line:
+            if char in (","):
+                line2 = line.replace(char, '\r')
+                telnet.write("{0}\r".format(line2))
+                telnet.write("exit\r")
+                self.textbuffer.set_text("{0}".format(telnet.read_all()))
 
     def on_network_up_clicked(self, widget):
         telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
