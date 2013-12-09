@@ -1,4 +1,6 @@
 #!/usr/bin/python2
+import os
+import getpass
 import telnetlib
 from gi.repository import Gtk
 
@@ -25,6 +27,33 @@ class deny_mac(Gtk.Dialog):
         self.show_all()
 
 class hellphyze:
+
+    def on_load_profile_clicked(self, widget):
+        if not os.path.isfile("/home/" + getpass.getuser() + "/.hellphyze_profile"):
+            dialog_no_profile = Gtk.MessageDialog(None, 0, Gtk.MessageType.WARNING,
+            Gtk.ButtonsType.OK, "Profile file does not exist!")
+            dialog_no_profile.format_secondary_text("")
+            dialog_no_profile.run()
+            dialog_no_profile.destroy()
+        else:
+            with open("/home/" + getpass.getuser() + "/.hellphyze_profile") as read_ip_port_username:
+                for i, line in enumerate(read_ip_port_username.readlines(), 0):
+                    for char in line:
+                        if char in ("\n"):
+                            line = line.replace(char,'')
+                    if i == 0:
+                        self.host_ip.set_text(line)
+                    if i == 1:
+                        self.host_port.set_text(line)
+                    if i == 2:
+                        self.host_username.set_text(line)
+
+    def on_save_profile_clicked(self, widget):
+        profile = open("/home/" + getpass.getuser() + "/.hellphyze_profile", "w")
+        profile.write("{0}\n".format(self.host_ip.get_text()))
+        profile.write("{0}\n".format(self.host_port.get_text()))
+        profile.write("{0}\n".format(self.host_username.get_text()))
+        profile.close()
 
     # type many commands in the "custom commands" field, separated by a ,  do not add spaces !
     def on_send_clicked(self, widget):

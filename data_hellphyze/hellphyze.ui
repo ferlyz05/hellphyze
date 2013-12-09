@@ -1,10 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <interface>
   <!-- interface-requires gtk+ 3.10 -->
+  <object class="GtkImage" id="image5">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-save</property>
+  </object>
   <object class="GtkImage" id="image7">
     <property name="visible">True</property>
     <property name="can_focus">False</property>
     <property name="stock">gtk-apply</property>
+  </object>
+  <object class="GtkImage" id="image8">
+    <property name="visible">True</property>
+    <property name="can_focus">False</property>
+    <property name="stock">gtk-add</property>
   </object>
   <object class="GtkWindow" id="window1">
     <property name="can_focus">False</property>
@@ -72,6 +82,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="margin_left">19</property>
+                        <property name="has_frame">False</property>
                       </object>
                       <packing>
                         <property name="left_attach">2</property>
@@ -116,6 +127,7 @@
                         <property name="visible">True</property>
                         <property name="can_focus">True</property>
                         <property name="margin_left">5</property>
+                        <property name="has_frame">False</property>
                         <property name="text" translatable="yes">23</property>
                       </object>
                       <packing>
@@ -150,6 +162,7 @@
                             <property name="halign">start</property>
                             <property name="margin_left">4</property>
                             <property name="visibility">False</property>
+                            <property name="has_frame">False</property>
                             <property name="width_chars">13</property>
                           </object>
                           <packing>
@@ -225,6 +238,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">True</property>
                             <property name="margin_left">5</property>
+                            <property name="has_frame">False</property>
                           </object>
                           <packing>
                             <property name="left_attach">2</property>
@@ -250,7 +264,7 @@
                             <property name="visible">True</property>
                             <property name="can_focus">False</property>
                             <property name="margin_left">6</property>
-                            <property name="margin_top">10</property>
+                            <property name="margin_top">7</property>
                             <child>
                               <object class="GtkButton" id="network_up">
                                 <property name="label" translatable="yes">Network Up</property>
@@ -340,13 +354,66 @@
                             <property name="margin_top">7</property>
                             <property name="orientation">vertical</property>
                             <child>
-                              <object class="GtkLabel" id="label4">
+                              <object class="GtkGrid" id="grid2">
                                 <property name="visible">True</property>
                                 <property name="can_focus">False</property>
-                                <property name="label" translatable="yes">Custom commands</property>
-                                <attributes>
-                                  <attribute name="foreground" value="#bababdbdb6b6"/>
-                                </attributes>
+                                <property name="column_spacing">64</property>
+                                <child>
+                                  <object class="GtkLabel" id="label4">
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">False</property>
+                                    <property name="label" translatable="yes">Custom commands</property>
+                                    <attributes>
+                                      <attribute name="foreground" value="#bababdbdb6b6"/>
+                                    </attributes>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">1</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="load_profile">
+                                    <property name="label" translatable="yes">Load Profile</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">start</property>
+                                    <property name="image">image8</property>
+                                    <property name="relief">none</property>
+                                    <property name="always_show_image">True</property>
+                                    <signal name="clicked" handler="on_load_profile_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">0</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
+                                <child>
+                                  <object class="GtkButton" id="save_profile">
+                                    <property name="label" translatable="yes">Save Profile</property>
+                                    <property name="visible">True</property>
+                                    <property name="can_focus">True</property>
+                                    <property name="receives_default">True</property>
+                                    <property name="halign">start</property>
+                                    <property name="valign">start</property>
+                                    <property name="image">image5</property>
+                                    <property name="relief">none</property>
+                                    <property name="always_show_image">True</property>
+                                    <signal name="clicked" handler="on_save_profile_clicked" swapped="no"/>
+                                  </object>
+                                  <packing>
+                                    <property name="left_attach">2</property>
+                                    <property name="top_attach">0</property>
+                                    <property name="width">1</property>
+                                    <property name="height">1</property>
+                                  </packing>
+                                </child>
                               </object>
                               <packing>
                                 <property name="expand">False</property>
@@ -359,6 +426,7 @@
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="margin_top">5</property>
+                                <property name="has_frame">False</property>
                                 <property name="primary_icon_stock">gtk-connect</property>
                               </object>
                               <packing>
