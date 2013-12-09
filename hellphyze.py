@@ -2,6 +2,27 @@
 import telnetlib
 from gi.repository import Gtk
 
+class allow_mac(Gtk.Dialog):
+    def __init__(self):
+        Gtk.Dialog.__init__(self, "Allow MAC", None,
+            Gtk.DialogFlags.MODAL, buttons=(Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        box = self.get_content_area()
+        label = Gtk.Label('Allow MAC, example 11:22:33:44:55:66')
+        box.add(label)
+        self.entry = Gtk.Entry()
+        box.add(self.entry)
+        self.show_all()
+
+class deny_mac(Gtk.Dialog):
+    def __init__(self):
+        Gtk.Dialog.__init__(self, "Deny MAC", None,
+            Gtk.DialogFlags.MODAL, buttons=(Gtk.STOCK_OK, Gtk.ResponseType.OK))
+        box = self.get_content_area()
+        label = Gtk.Label('Deny MAC, example 11:22:33:44:55:66')
+        box.add(label)
+        self.entry = Gtk.Entry()
+        box.add(self.entry)
+        self.show_all()
 
 class hellphyze:
 
@@ -15,7 +36,6 @@ class hellphyze:
         telnet.write("exit\r")
         self.textbuffer.set_text("{0}".format(telnet.read_all()))
 
-
     def on_network_up_clicked(self, widget):
         telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
         telnet.read_until("Username : ")
@@ -28,7 +48,6 @@ class hellphyze:
         telnet.write("exit\r")
         self.textbuffer.set_text("{0}".format(telnet.read_all()))
 
-
     def on_network_down_clicked(self, widget):
         telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
         telnet.read_until("Username : ")
@@ -38,32 +57,39 @@ class hellphyze:
         telnet.write("ppp ifdetach intf=pppInternet\r")
         telnet.write("ip ifdetach intf=ipInternet\r")
         telnet.write("saveall\r")
-        telnet.write("saveall\r")
         telnet.write("exit\r")
         self.textbuffer.set_text("{0}".format(telnet.read_all()))
-
 
     def on_allow_2_mac_clicked(self, widget):
-        telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
-        telnet.read_until("Username : ")
-        telnet.write(self.host_username.get_text() + "\r")
-        telnet.read_until("Password : ")
-        telnet.write(self.host_password.get_text() + "\r")
-        telnet.write("wireless macacl modify ssid_id=0 hwaddr=12:34:56:78:90:2f permission=allow\r")
-        telnet.write("wireless macacl modify ssid_id=0 hwaddr=12:34:56:78:90:2f permission=allow\r")
-        telnet.write("exit\r")
-        self.textbuffer.set_text("{0}".format(telnet.read_all()))
+        dialog = allow_mac()
+        response = dialog.run()
+        entered_text = dialog.entry.get_text()
+        if response == Gtk.ResponseType.OK:
+            telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
+            telnet.read_until("Username : ")
+            telnet.write(self.host_username.get_text() + "\r")
+            telnet.read_until("Password : ")
+            telnet.write(self.host_password.get_text() + "\r")
+            telnet.write('wireless macacl modify ssid_id=0 hwaddr="{0}" permission=allow\r'.format(entered_text))
+            telnet.write("exit\r")
+            self.textbuffer.set_text("{0}".format(telnet.read_all()))
+        dialog.destroy()
 
     def on_deny_2_mac_clicked(self, widget):
-        telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
-        telnet.read_until("Username : ")
-        telnet.write(self.host_username.get_text() + "\r")
-        telnet.read_until("Password : ")
-        telnet.write(self.host_password.get_text() + "\r")
-        telnet.write("wireless macacl modify ssid_id=0 hwaddr=12:34:56:78:90:2f permission=deny\r")
-        telnet.write("wireless macacl modify ssid_id=0 hwaddr=12:34:56:78:90:2f permission=deny\r")
-        telnet.write("exit\r")
-        self.textbuffer.set_text("{0}".format(telnet.read_all()))
+        dialog = deny_mac()
+        response = dialog.run()
+        entered_text = dialog.entry.get_text()
+        if response == Gtk.ResponseType.OK:
+            telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
+            telnet.read_until("Username : ")
+            telnet.write(self.host_username.get_text() + "\r")
+            telnet.read_until("Password : ")
+            telnet.write(self.host_password.get_text() + "\r")
+            telnet.write('wireless macacl modify ssid_id=0 hwaddr="{0}" permission=deny\r'.format(entered_text))
+            telnet.write("saveall\r")
+            telnet.write("exit\r")
+            self.textbuffer.set_text("{0}".format(telnet.read_all()))
+        dialog.destroy()
 
     def on_disable_reset_button_clicked(self, widget):
         telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
@@ -79,8 +105,6 @@ class hellphyze:
         telnet.write("exit\r")
         self.textbuffer.set_text("{0}".format(telnet.read_all()))
 
-
-
     def on_list_devices_clicked(self, widget):
         telnet = telnetlib.Telnet(self.host_ip.get_text(), self.host_port.get_text())
         telnet.read_until("Username : ")
@@ -90,7 +114,6 @@ class hellphyze:
         telnet.write("hostmgr list\r")
         telnet.write("exit\r")
         self.textbuffer.set_text("{0}".format(telnet.read_all()))
-
 
     def __init__(self):
         self.builder = Gtk.Builder()

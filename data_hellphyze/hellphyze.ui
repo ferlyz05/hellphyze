@@ -282,7 +282,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="deny_2_mac">
-                                <property name="label" translatable="yes">Deny 2 MAC</property>
+                                <property name="label" translatable="yes">Deny MAC</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
@@ -297,7 +297,7 @@
                             </child>
                             <child>
                               <object class="GtkButton" id="allow_2_mac">
-                                <property name="label" translatable="yes">Allow 2 MAC</property>
+                                <property name="label" translatable="yes">Allow MAC</property>
                                 <property name="visible">True</property>
                                 <property name="can_focus">True</property>
                                 <property name="receives_default">True</property>
