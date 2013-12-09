@@ -6,5 +6,6 @@ To use multiple custom commands separate them with a comma: command1,command2,co
 ## Requirements
 
 * python2
+* gpg (for saving and loading profiles)
 * python-gobject (for debian is python-gi)
 * webkitgtk, pywebkitgtk
