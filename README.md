@@ -9,5 +9,6 @@ Thanks to <a href="http://FilmsByKris.com" target="_blank">Chris Occhipinti</a> 
 
 * python2
 * gpg (for saving and loading profiles)
-* python-gobject (for debian is python-gi)
-* webkitgtk, pywebkitgtk
+* python2-gobject
+* webkitgtk
+* pywebkitgtk
