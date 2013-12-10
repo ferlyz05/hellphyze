@@ -1,6 +1,5 @@
 #!/usr/bin/python2
 import os
-import shutil
 import getpass
 import telnetlib
 from gi.repository import Gtk
@@ -81,6 +80,8 @@ class hellphyze:
             dialog_encrypted.format_secondary_text("")
             dialog_encrypted.run()
             dialog_encrypted.destroy()
+        else:
+            os.remove(profile_file)
 
     # type many commands in the "custom commands" field, separated by a ,  do not add spaces !
     def on_send_clicked(self, widget):
