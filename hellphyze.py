@@ -60,7 +60,7 @@ class hellphyze:
                         self.host_username.set_text(line)
                     if i == 3:
                         self.host_password.set_text(line)
-                os.remove(profile_file)
+            os.remove(profile_file)
 
     def on_save_profile_clicked(self, widget):
         if os.path.isfile(encrypted_profile_file):
@@ -73,15 +73,13 @@ class hellphyze:
         profile.close()
         # encrypt the profile - call gpg
         os.system('gpg -o "{0}" --cipher-algo AES256 --symmetric "{1}"'.format(encrypted_profile_file, profile_file))
+        os.remove(profile_file)
         if os.path.isfile(encrypted_profile_file):
-            os.remove(profile_file)
             dialog_encrypted = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
                 Gtk.ButtonsType.OK, "Profile saved & encrypted")
             dialog_encrypted.format_secondary_text("")
             dialog_encrypted.run()
             dialog_encrypted.destroy()
-        else:
-            os.remove(profile_file)
 
     # type many commands in the "custom commands" field, separated by a ,  do not add spaces !
     def on_send_clicked(self, widget):
