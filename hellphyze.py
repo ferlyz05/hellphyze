@@ -28,10 +28,11 @@ class deny_mac(Gtk.Dialog):
         self.show_all()
 
 profile_file = "/home/" + getpass.getuser() + "/.hellphyze_profile"
+encrypted_profile_file = "/home/" + getpass.getuser() + "/.hellphyze_profile.gpg"
 class hellphyze:
 
     def on_load_profile_clicked(self, widget):
-        if not os.path.isfile(profile_file):
+        if not os.path.isfile(encrypted_profile_file):
             dialog_no_profile = Gtk.MessageDialog(None, 0, Gtk.MessageType.WARNING,
             Gtk.ButtonsType.OK, "Profile file does not exist!")
             dialog_no_profile.format_secondary_text("")
@@ -39,37 +40,32 @@ class hellphyze:
             dialog_no_profile.destroy()
         else:
             # decrypt the encrypted profile - call gpg
-            shutil.copy(profile_file, profile_file + '.bak')
-            shutil.move(profile_file, profile_file + '.gpg')
-            os.system('gpg "{0}".gpg'.format(profile_file))
+            os.system('gpg "{0}"'.format(encrypted_profile_file))
             if not os.path.isfile(profile_file):
-                shutil.move(profile_file + '.bak', profile_file)
-                os.remove(profile_file + '.gpg')
                 dialog = Gtk.MessageDialog(None, 0, Gtk.MessageType.WARNING,
                     Gtk.ButtonsType.OK, "Wrong password, huh ?")
                 dialog.format_secondary_text("")
                 dialog.run()
                 dialog.destroy()
-            else:
-                if os.path.isfile(profile_file + '.gpg'):
-                    os.remove(profile_file + '.gpg')
-                    os.remove(profile_file + '.bak')
                 # now open and read it's content
-                with open(profile_file) as read_ip_port_username:
-                    for i, line in enumerate(read_ip_port_username.readlines(), 0):
-                        for char in line:
-                            if char in ("\n"):
-                                line = line.replace(char,'')
-                        if i == 0:
-                            self.host_ip.set_text(line)
-                        if i == 1:
-                            self.host_port.set_text(line)
-                        if i == 2:
-                            self.host_username.set_text(line)
-                        if i == 3:
-                            self.host_password.set_text(line)
+            with open(profile_file) as read_ip_port_username:
+                for i, line in enumerate(read_ip_port_username.readlines(), 0):
+                    for char in line:
+                        if char in ("\n"):
+                            line = line.replace(char,'')
+                    if i == 0:
+                        self.host_ip.set_text(line)
+                    if i == 1:
+                        self.host_port.set_text(line)
+                    if i == 2:
+                        self.host_username.set_text(line)
+                    if i == 3:
+                        self.host_password.set_text(line)
+                os.remove(profile_file)
 
     def on_save_profile_clicked(self, widget):
+        if os.path.isfile(encrypted_profile_file):
+            os.remove(encrypted_profile_file)
         profile = open(profile_file, "w")
         profile.write("{0}\n".format(self.host_ip.get_text()))
         profile.write("{0}\n".format(self.host_port.get_text()))
@@ -77,15 +73,14 @@ class hellphyze:
         profile.write("{0}\n".format(self.host_password.get_text()))
         profile.close()
         # encrypt the profile - call gpg
-        gpg_file = "/home/" + getpass.getuser() + "/.encrypted-profile.gpg"
-        os.system('gpg -o "{0}" --cipher-algo AES256 --symmetric "{1}"'.format(gpg_file, profile_file))
-        if os.path.isfile(gpg_file):
-            shutil.move(gpg_file, profile_file)
-        dialog_encrypted = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
-            Gtk.ButtonsType.OK, "Profile saved & encrypted")
-        dialog_encrypted.format_secondary_text("")
-        dialog_encrypted.run()
-        dialog_encrypted.destroy()
+        os.system('gpg -o "{0}" --cipher-algo AES256 --symmetric "{1}"'.format(encrypted_profile_file, profile_file))
+        if os.path.isfile(encrypted_profile_file):
+            os.remove(profile_file)
+            dialog_encrypted = Gtk.MessageDialog(None, 0, Gtk.MessageType.INFO,
+                Gtk.ButtonsType.OK, "Profile saved & encrypted")
+            dialog_encrypted.format_secondary_text("")
+            dialog_encrypted.run()
+            dialog_encrypted.destroy()
 
     # type many commands in the "custom commands" field, separated by a ,  do not add spaces !
     def on_send_clicked(self, widget):
