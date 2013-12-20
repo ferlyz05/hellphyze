@@ -5,6 +5,11 @@ Python gui telnet client. Keep in mind that I've wrote it for Thomson TG582 and 
 To use multiple custom commands separate them with a comma: command1,command2,command3,command4
 
 Thanks to <a href="http://FilmsByKris.com" target="_blank">Chris Occhipinti</a> for the given inspiration - https://www.youtube.com/watch?v=fIOk2EcgOI8 this is the video which made me to create the program.
+## Archlinux support
+Archlinux users can install the program directly from AUR, without the need to download it from here.
+
+    yaourt -S hellphyze-git
+
 ## Requirements
 
 * python2
