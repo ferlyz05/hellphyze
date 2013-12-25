@@ -1,6 +1,5 @@
-#!/usr/bin/python2
+#!/usr/bin/env python2
 import os
-import getpass
 import telnetlib
 from gi.repository import Gtk, Gdk
 
@@ -26,9 +25,15 @@ class deny_mac(Gtk.Dialog):
         box.add(self.entry)
         self.show_all()
 
-profile_file = "/home/" + getpass.getuser() + "/.hellphyze_profile"
-encrypted_profile_file = "/home/" + getpass.getuser() + "/.hellphyze_profile.gpg"
+profile_file = os.getenv("HOME") + "/.hellphyze_profile"
+encrypted_profile_file = os.getenv("HOME") + "/.hellphyze_profile.gpg"
 class hellphyze:
+
+    def on_show_password_toggled(self, widget):
+        if widget.get_active():
+            self.host_password.set_visibility(True)
+        else:
+            self.host_password.set_visibility(False)
 
     def on_load_profile_clicked(self, widget):
         if not os.path.isfile(encrypted_profile_file):
