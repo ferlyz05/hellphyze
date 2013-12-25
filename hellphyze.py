@@ -2,7 +2,7 @@
 import os
 import getpass
 import telnetlib
-from gi.repository import Gtk
+from gi.repository import Gtk, Gdk
 
 class allow_mac(Gtk.Dialog):
     def __init__(self):
@@ -191,6 +191,13 @@ class hellphyze:
         self.window = self.builder.get_object("window1")
         self.window.connect("delete-event", Gtk.main_quit)
         self.window.show_all()
+
+        self.screen = Gdk.Screen.get_default()
+        self.css_provider = Gtk.CssProvider()
+        self.css_provider.load_from_path('data_hellphyze/style.css')
+        self.priority = Gtk.STYLE_PROVIDER_PRIORITY_USER
+        self.context = Gtk.StyleContext()
+        self.context.add_provider_for_screen(self.screen, self.css_provider, self.priority)
 
 if __name__ == '__main__':
     hellphyze()

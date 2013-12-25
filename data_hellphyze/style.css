@@ -1,0 +1,7 @@
+GtkEntry {
+    color: darkgrey;
+}
+
+GtkEntry:focused {
+    color: black;
+} 
